@@ -40,7 +40,6 @@ import { TicTacToe } from "./TicTacToe";
 const initialState=10;
 const context=createContext(null); //null is the default value if provider is missing
 
-
 const MyGrandChild=()=>{
   const {state,setState}=useContext(context);
   console.log({state,setState});
