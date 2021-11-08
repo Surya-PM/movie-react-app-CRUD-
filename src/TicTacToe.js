@@ -27,7 +27,7 @@ function Game() {
     null,
   ]);
   const { width, height } = useWindowSize();
-  const decideWinner = (board) => {
+const decideWinner = (board) => {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -49,10 +49,12 @@ function Game() {
       }
     }
     return null; // if no winner
+    // return ("draw"); 
   };
 
 
-  const winner = decideWinner(board);
+  const winner =decideWinner(board);
+//   console.log(winner);
   const [isXTurn, setIsXTurn] = useState(true);
 
   const handleClick = (index) => {
@@ -82,9 +84,12 @@ function Game() {
           <GameBox val={val} onPlayerClick={() => handleClick(index)} />
         ))}
       </div>
+      {/* if({winner}=="draw") { <h1>Match Draw</h1> }
+      else{ */}
       {winner ? <h1>The Winner is : {winner}</h1> : ""}
       {winner ? <Confetti width={width} height={height} /> : ""}
       {/* <h1>Match Draw</h1> */}
+{/* } */}
       <Button
       onClick={restart}
       variant="contained"><CachedIcon/>Restart</Button>
