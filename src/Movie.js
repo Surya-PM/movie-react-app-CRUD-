@@ -12,14 +12,25 @@ import { useHistory } from "react-router";
 import InfoIcon from '@mui/icons-material/Info';
 
 // pass data from parent to Child -> Props
-export function Movie({ name, poster, rating, summary, id, setMovies, movies }) {
+export function Movie({ name, poster, rating, summary, id, setMovies, movies ,getMovies
+  // DeleteMovieButton
+}) {
   //----------------------------------------
   // const movie={name, poster, rating, summary};
+  
 
   const history=useHistory();
   //---------------------------------------------
   const [show, setShow] = useState(true);
   const styles = { display: show ? "block" : "none" };
+
+const deleteMovie=(id) => {
+  fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies/"+id,{
+    method:"DELETE"
+  }).then(()=>getMovies());
+
+};
+
   return (
     <Card className="movie-container">
       <img className="movie-poster" src={poster} alt={name} />
@@ -57,14 +68,9 @@ export function Movie({ name, poster, rating, summary, id, setMovies, movies }) 
 
           <EditIcon />
         </IconButton>
+        
         <IconButton color="error"
-          // style={{marginLeft:"auto"}}
-          onClick={() => {
-            console.log(id, movies);
-            const remMovies = movies.filter((mv, index) => index != id);
-            console.log(remMovies);
-            setMovies(remMovies);
-          }}>
+          onClick={() => {deleteMovie(id)}}>
 
           <DeleteIcon />
         </IconButton>

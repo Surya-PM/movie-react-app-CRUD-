@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link ,Redirect} from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react'
+import { useEffect } from "react";
+
 
 //-----------App Bar----------------
 import AppBar from '@mui/material/AppBar';
@@ -18,7 +20,7 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 //-----------------------------
 
 //-------Components------------
@@ -31,7 +33,7 @@ import { AddMovie } from "./AddMovie";
 import { EditMovie } from "./EditMovie";
 import { MovieDetails } from "./MovieDetails";
 import { TicTacToe } from "./TicTacToe";
-
+import { BasicForm } from "./BasicForm";
 
 //-----------------------
 
@@ -65,70 +67,21 @@ const Mychild=()=>{
 };
 
 
-// const theme = createTheme({
-//   palette: {
-//     // mode: 'light',
-//     mode: 'dark',
-//   },
-// });
 
 
 function App() {
 const history=useHistory();
-  const Initial_movies = [
-    {
-      id: "100",
-      name: "Interstellar",
-      poster: "https://m.media-amazon.com/images/I/A1JVqNMI7UL._SL1500_.jpg",
-      rating: 8.6,
-      trailer:"https://www.youtube.com/embed/zSWdZVtXT7E",
-      summary: ` When Earth becomes uninhabitable in the future, a farmer and ex-NASA
-  pilot, Joseph Cooper, is tasked to pilot a spacecraft, along with a team
-  of researchers, to find a new planet for humans.`,
-    },
-    {
-      id: "101",
-      name: "Baahubali",
-      poster: "https://flxt.tmsimg.com/assets/p11546593_p_v10_af.jpg",
-      rating: 8,
-      trailer:"https://www.youtube.com/embed/sOEg_YZQsTI",
-      summary: `In the kingdom of Mahishmati, Shivudu falls in love with a young warrior woman. While trying to woo her, he learns about the conflict-ridden past of his family and his true legacy.`,
-    },
-    {
-      id: "102",
-      name: "Ratatouille",
-      poster: "https://resizing.flixster.com/gL_JpWcD7sNHNYSwI1ff069Yyug=/ems.ZW1zLXByZC1hc3NldHMvbW92aWVzLzc4ZmJhZjZiLTEzNWMtNDIwOC1hYzU1LTgwZjE3ZjQzNTdiNy5qcGc=",
-      rating: 8,
-      trailer:"https://www.youtube.com/embed/NgsQ8mVkN8w",
-      summary: `Remy, a rat, aspires to become a renowned French chef. However, he fails to realise that people despise rodents and will never enjoy a meal cooked by him.`,
-    },
-
-    {
-      id: "103",
-      name: "96",
-      poster: "https://a10.gaanacdn.com/gn_img/albums/9En3peWXDV/En3pYMLPWX/size_xxl_1535086576.webp",
-      rating: 8.6,
-      trailer:"https://www.youtube.com/embed/r0synl-lI4I",
-      summary: `K Ramachandran, a photographer, gets nostalgic after he visits his school in his hometown. During a reunion with his classmates, he meets Janaki, his childhood sweetheart.`,
-    },
-
-    {
-      id: "104",
-      name: "M.S. Dhoni: The Untold Story",
-      poster: "https://m.media-amazon.com/images/I/71miTEyKvYL._SL1112_.jpg",
-      rating: 7.9,
-      trailer:"https://www.youtube.com/embed/G2zb_nbrnyU",
-      summary: `M S Dhoni, a boy from Ranchi, aspires to play cricket for India. Though he initially tries to please his father by working for the Indian Railways, he ultimately decides to chase his dreams.`,
-    },
-  ];
-  const [movies, setMovies] = useState(Initial_movies);
-
+const [movies, setMovies] = useState([]);
+ 
+  useEffect(()=>{
+    fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies")
+    .then((data)=> data.json())
+    .then((mvs)=>setMovies(mvs));
+  },[]);
 
 const[mode,setMode]=useState(true);
 const theme = createTheme({
   palette: {
-    // mode: 'light',
-    // mode: 'dark',
     mode:mode?"light":"dark",
   },
 });
@@ -173,6 +126,10 @@ onClick={()=>history.push('/tic-tac-toe-game')}
 startIcon={<SportsEsportsIcon/>}
   color="inherit" >TicTacToe Game</Button>
 <Button
+onClick={()=>history.push('/basicform')}
+startIcon={<FormatAlignJustifyIcon/>}
+  color="inherit" >BasicForm</Button>
+<Button
 startIcon={mode ?<DarkModeIcon/>  :<LightModeIcon/> }
 style={{ marginLeft: "auto" }}
 onClick={()=>setMode(!mode)}
@@ -184,29 +141,31 @@ onClick={()=>setMode(!mode)}
       <Switch>
       
     <Route path="/movie">
-        <MovieList movies={movies} setMovies={setMovies}/> 
+        <MovieList /> 
     </Route>
     <Route path="/movies/add">
-      <AddMovie movies={movies} setMovies={setMovies}/>
+      <AddMovie />
     </Route>
     <Route path="/tic-tac-toe-game">
         <TicTacToe /> 
     </Route>
 {/* ---------------------------------- */}
     <Route exact path="/movies/edit/:id">
-      <EditMovie movies={movies} setMovies={setMovies} />
+      <EditMovie  />
       {/* edit movie */}
     </Route>
 
     <Route exact path= "/movies/:id">
-      <MovieDetails movies={movies} />
+      <MovieDetails />
     </Route>
 {/* ---------------------------------- */}
 
     <Route path="/films">
         <Redirect to="/movie"/> 
     </Route>
-    
+    <Route exact path="/basicform">
+          <BasicForm />
+      </Route>
         <Route path="/colorgame">
         <ColorList/>
         <ColorBox/>
@@ -214,6 +173,7 @@ onClick={()=>setMode(!mode)}
         <Route exact path="/">
           <Welcome />
       </Route>
+       
       <Route path= "**">
         <NotFound />
       </Route>
@@ -232,7 +192,6 @@ onClick={()=>setMode(!mode)}
 
 
 export default App;
-
 
 
 // Task

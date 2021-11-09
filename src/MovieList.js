@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Movie } from "./Movie";
 import { AddMovie } from "./AddMovie";
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { useHistory } from "react-router";
 
 
-export function MovieList({movies,setMovies}) {
+export function MovieList() {
+  const [movies, setMovies] = useState([]);
+ 
+  const getMovies =()=>{
+    fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies")
+    .then((data)=> data.json())
+    .then((mvs)=>setMovies(mvs));
+  }
+
+  useEffect(getMovies,[]);
 
   return (
     <section>
@@ -15,9 +27,10 @@ export function MovieList({movies,setMovies}) {
             poster={mv.poster}
             rating={mv.rating}
             summary={mv.summary}
-            id={index}
+            id={mv.id}
             setMovies={setMovies}
             movies={movies} 
+            getMovies={getMovies}
             />
         ))}
       </div>

@@ -4,22 +4,36 @@ import TextField from '@mui/material/TextField';
 import { useHistory } from "react-router";
 
 
-export function AddMovie({ movies, setMovies }) {
+export function AddMovie() {
 const history=useHistory();
     const [name, setName] = useState("");
     const [poster, setPoster] = useState("");
     const [rating, setRating] = useState("");
     const [summary, setSummary] = useState("");
+    const [trailer, setTrailer] = useState("");
 
-    const addnewmovie = () => {
-        const newMovie = { name, poster, rating, summary };
-        setMovies([...movies, newMovie]);
-        console.log({ name, poster, rating, summary });
+    const refreshform=()=>{
         setName("");
         setPoster("");
         setRating("");
         setSummary("");
-        history.push('/movie');
+        setTrailer("");
+    }
+
+    const addnewmovie = () => {
+        const newMovie = { name, poster, rating, summary,trailer };
+        // setMovies([...movies, newMovie]);
+        // console.log({ name, poster, rating, summary,trailer });
+
+        fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies",{
+            method:"POST",
+            body:JSON.stringify(newMovie),
+            headers: { 'Content-Type': 'application/json'}
+        })
+        .then(()=>{
+            history.push('/movie');
+            refreshform();
+        }).catch((error)=>console.log(error)) ;
     };
 
     return (
@@ -41,6 +55,12 @@ const history=useHistory();
                 value={rating}
                 onChange={(event) => setRating(event.target.value)}
                 label="Rating"
+                variant="outlined" />
+            <TextField
+
+                value={trailer}
+                onChange={(event) => setTrailer(event.target.value)}
+                label="Trailer"
                 variant="outlined" />
 
             <TextField

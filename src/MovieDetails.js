@@ -4,11 +4,19 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useHistory } from "react-router";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { useState,useEffect } from "react";
 
-export function MovieDetails({ movies }) {
+export function MovieDetails() {
   const history=useHistory();
   const { id } = useParams();
-  const movie = movies[id];
+  const [movie, setMovie] = useState([]);
+ 
+  useEffect(()=>{
+    fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies/"+id)
+    .then((data)=> data.json())
+    .then((mv)=>setMovie(mv));
+  },[]);
+  // const movie = movies[id];
   return (
     <div className="movie-details">
       <iframe
