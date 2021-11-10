@@ -135,7 +135,9 @@ const{handleSubmit,handleBlur,handleChange,values,errors,touched}= useFormik({
                 />
 
 
-            <Button variant="contained" type="submit" onClick={addnewmovie}>Add Movie</Button>
+            <Button variant="contained" type="submit" 
+            // onClick={addnewmovie}   should allow formik to allow submit process
+            >Add Movie</Button>
 
         </form>
     );

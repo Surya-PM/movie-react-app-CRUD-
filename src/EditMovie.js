@@ -171,7 +171,7 @@ function EditMovieForm({movie,id}) {
                 type="submit"
                 variant="contained"
                 // onClick={editmovie}
-                onClick={editmovie}
+                // onClick={editmovie}
                 
                 >Save</Button>
                 
