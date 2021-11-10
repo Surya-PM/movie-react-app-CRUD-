@@ -81,13 +81,6 @@ function EditMovieForm({movie,id}) {
 
 
 
-    // const [name, setName] = useState(movie.name);
-    // const [poster, setPoster] = useState(movie.poster);
-    // const [rating, setRating] = useState(movie.rating);
-    // const [summary, setSummary] = useState(movie.summary);
-    // const [trailer, setTrailer] = useState(movie.trailer);
-
-   
     
 
     return (
