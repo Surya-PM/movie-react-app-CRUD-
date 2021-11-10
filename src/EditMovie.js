@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
+import {useFormik} from "formik";
+import * as yup from "yup";
 
 export function EditMovie() {
     const history=useHistory();
@@ -21,20 +23,37 @@ return movie? <EditMovieForm movie={movie} id={id}/>:"";
    
 }
 
+
+const editMovieValidationSchema=yup.object({
+    name:yup.string()
+          .required("Enter Movie name 😒"),
+    poster:yup.string()
+        // .matches(/(http[s]*:\/\/)([a-z\-_0-9\/.]+)\.([a-z.]{2,3})\/([a-z0-9\-_\/._~:?#\[\]@!$&'()*+,;=%]*)([a-z0-9]+\.)(jpg|jpeg|png)/i,"Enter valid  URL 😒")
+        //  .matches(/(http[s]?:\/\/.*\.(?:png|jpg|gif|svg|jpeg))/i,"Enter valid  URL 😒")
+          .required("Enter proper Poster URL 😒")
+          .min(10,"Enter valid  URL 😒"),
+    rating:yup.number()
+           .min(0)
+           .max(10)
+          .required("Enter Rating as Number /10 😒"),
+    trailer:yup.string()
+            .matches(/(https|http):\/\/(?:www\.)?youtube.com\/embed\/[A-z0-9]+/i,"Enter valid  URL 😒")
+          .required("Enter proper  URL 😒"),
+    summary:yup.string()
+          .min(20)
+          .required("Enter Movie Plot 😒"),
+})
+
+
+
+
 function EditMovieForm({movie,id}) {
     const history=useHistory();
-    const [name, setName] = useState(movie.name);
-    const [poster, setPoster] = useState(movie.poster);
-    const [rating, setRating] = useState(movie.rating);
-    const [summary, setSummary] = useState(movie.summary);
-    const [trailer, setTrailer] = useState(movie.trailer);
 
-    const editmovie = () => {
-        const updatedMovie = { name, poster, rating, summary,trailer };
-        // const copyMovies=[...movies];
-        // copyMovies[id]=updatedMovie;
-        // setMovies(copyMovies);
-        // history.push('/movie');
+    const editmovie = (updatedMovie) => {
+        console.log("onSubmit",updatedMovie);
+        // const updatedMovie = { name, poster, rating, summary,trailer };
+        
 
         fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies/"+id,{
             method:"PUT",
@@ -47,40 +66,103 @@ function EditMovieForm({movie,id}) {
 
 
     };
+
+
+    const{handleSubmit,handleBlur,handleChange,values,errors,touched}= useFormik({
+        initialValues:{ 
+            name: movie.name,
+             poster:movie.poster,
+             rating:movie.rating,
+             summary:movie.summary,
+             trailer:movie.trailer},
+       validationSchema:editMovieValidationSchema,
+         onSubmit:editmovie
+    });
+
+
+
+    // const [name, setName] = useState(movie.name);
+    // const [poster, setPoster] = useState(movie.poster);
+    // const [rating, setRating] = useState(movie.rating);
+    // const [summary, setSummary] = useState(movie.summary);
+    // const [trailer, setTrailer] = useState(movie.trailer);
+
+   
     
 
     return (
-        <div className="add-movie-form">
+        <form 
+        onSubmit={handleSubmit}
+        className="add-movie-form">
             <TextField
                 variant="outlined"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                label="Name" />
+                id="name"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label="Name"
+                error={errors.name && 
+                    touched.name}
+                helperText={errors.name && 
+                    touched.name && errors.name} />
 
             <TextField
-                value={poster}
-                onChange={(event) => setPoster(event.target.value)}
+                value={values.poster}
+                id="poster"
+                name="poster"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 label="PosterURL"
-                variant="outlined" />
+                variant="outlined" 
+                error={errors.poster && 
+                    touched.poster}
+                helperText={errors.poster && 
+                    touched.poster && errors.poster}
+                />          
 
             <TextField
-
-                value={rating}
-                onChange={(event) => setRating(event.target.value)}
+                type="number"
+                value={values.rating}
+                id="rating"
+                name="rating"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 label="Rating"
-                variant="outlined" />
-            <TextField
+                variant="outlined"
+                error={errors.rating && 
+                    touched.rating}
+                helperText={errors.rating && 
+                    touched.rating && errors.rating}
+                />
+             <TextField
 
-                value={trailer}
-                onChange={(event) => setTrailer(event.target.value)}
+                value={values.trailer}
+                id="trailer"
+                name="trailer"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 label="Trailer"
-                variant="outlined" />
+                variant="outlined"
+                error={errors.trailer && 
+                    touched.trailer}
+                helperText={errors.trailer && 
+                    touched.trailer && errors.trailer}
+                />
 
             <TextField
-                value={summary}
-                onChange={(event) => setSummary(event.target.value)}
+                value={values.summary}
+                id="summary"
+                name="summary"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 label="Summary"
-                variant="outlined" />
+                variant="outlined"
+                error={errors.summary && 
+                    touched.summary}
+                helperText={errors.summary && 
+                    touched.summary && errors.summary}
+                />
 
 
             <div className="edit-buttons">
@@ -93,6 +175,7 @@ function EditMovieForm({movie,id}) {
 
                 <Button
                 color="success"
+                type="submit"
                 variant="contained"
                 // onClick={editmovie}
                 onClick={editmovie}
@@ -101,7 +184,7 @@ function EditMovieForm({movie,id}) {
                 
             </div>
 
-        </div>
+        </form>
     );
 
 }
