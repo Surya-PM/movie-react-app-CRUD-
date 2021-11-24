@@ -74,7 +74,7 @@ const history=useHistory();
 const [movies, setMovies] = useState([]);
  
   useEffect(()=>{
-    fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies")
+    fetch("https://react-movie-app-api.herokuapp.com/movies")
     .then((data)=> data.json())
     .then((mvs)=>setMovies(mvs));
   },[]);

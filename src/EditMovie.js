@@ -13,7 +13,7 @@ export function EditMovie() {
     const [movie, setMovie] = useState(null);
  
     useEffect(()=>{
-      fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies/"+id)
+      fetch("https://react-movie-app-api.herokuapp.com/movies/"+id)
       .then((data)=> data.json())
       .then((mv)=>setMovie(mv));
     },[]);
@@ -55,7 +55,7 @@ function EditMovieForm({movie,id}) {
         // const updatedMovie = { name, poster, rating, summary,trailer };
         
 
-        fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies/"+id,{
+        fetch("https://react-movie-app-api.herokuapp.com/movies/"+id,{
             method:"PUT",
             body:JSON.stringify(updatedMovie),
             headers: { 'Content-Type': 'application/json'}

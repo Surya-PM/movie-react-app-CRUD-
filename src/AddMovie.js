@@ -36,7 +36,7 @@ const addnewmovie = (newMovie) => {
     console.log("onSubmit",newMovie);
     // const newMovie = {};
 
-    fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies",{
+    fetch("https://react-movie-app-api.herokuapp.com/movies",{
         method:"POST",
         body:JSON.stringify(newMovie),
         headers: { 'Content-Type': 'application/json'}

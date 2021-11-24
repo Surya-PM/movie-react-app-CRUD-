@@ -25,7 +25,7 @@ export function Movie({ name, poster, rating, summary, id, setMovies, movies ,ge
   const styles = { display: show ? "block" : "none" };
 
 const deleteMovie=(id) => {
-  fetch("https://6156a15ce039a0001725aadf.mockapi.io/movies/"+id,{
+  fetch("https://react-movie-app-api.herokuapp.com/movies/"+id,{
     method:"DELETE"
   }).then(()=>getMovies());
 
